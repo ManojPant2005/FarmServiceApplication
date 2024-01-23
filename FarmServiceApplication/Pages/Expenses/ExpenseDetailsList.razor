@@ -1,0 +1,83 @@
+﻿@page "/expenseDetails"
+@using FarmServiceApplication.Data
+@using FarmServiceApplication.Services
+@inject ExpenseService ExpenseService
+@inject NavigationManager NavigationManager
+
+<NavLink class="nav-link" href="addnewexpense">
+    <span class="oi oi-plus" aria-hidden="true"> Add New  Expense Details..</span>
+</NavLink>
+
+<h3>Expenses Details...</h3>
+
+@if (EmpObj is null)
+{
+    <p><em>Loading..............!!</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    ExpensesId
+                </th>
+                <th>
+                    FarmId
+                </th>
+                <th>
+                    ExpensesType
+                </th>
+                <th>
+                    ExpensesAmount
+                </th>
+                <th>
+                    ExpensesDate
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var farmDetail in EmpObj)
+            {
+                <tr>
+                    <td>
+                        @farmDetail.ExpensesId
+                    </td>
+                    <td>
+                        @farmDetail.FarmId
+                    </td>
+                    <td>
+                        @farmDetail.ExpensesType
+                    </td>
+                    <td>
+                        @farmDetail.ExpensesAmount
+                    </td>
+                    <td>
+                        @farmDetail.ExpensesDate                    
+                   </td>
+
+                    <td>
+                        <a class="nav-link btn btn-group-sm" href="editExepenseDetails/@farmDetail.ExpensesId">
+                            <span class="oi oi-pencil" aria-hidden="true"> Edit </span>
+                        </a>
+                    </td>
+                    <td>
+                        <a class="nav-link btn btn-group-sm" href="deleteExepenseDetails/@farmDetail.ExpensesId">
+                            <span class="oi oi-trash" aria-hidden="true"> Delete </span>
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+@code {
+    List<Expense> EmpObj;
+
+    protected override async Task OnInitializedAsync()
+    {
+        EmpObj = await Task.Run(() => ExpenseService.GetAllExpense());
+    }
+}

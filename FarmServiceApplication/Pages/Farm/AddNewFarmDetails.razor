@@ -1,0 +1,51 @@
+﻿  @page "/addfarmdetails"
+
+@using FarmServiceApplication.Data
+@using FarmServiceApplication.Services
+ @inject FarmService FarmService
+ @inject NavigationManager NavigationManager
+<h3>Add New Farm Details</h3>
+<hr />
+
+<form>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="for-group">
+                <label for="FarmName" class="control-label">FarmName</label>
+                <input form="farmName" class="form-control" @bind="@obj.FarmName" />
+            </div>
+            <div class="for-group">
+                <label for="Location" class="control-label">Location</label>
+                <input form="Location" class="form-control" @bind="@obj.Location" />
+            </div>
+            <div class="for-group">
+                <label for="Size" class="control-label">Size</label>
+                <input form="Size" class="form-control" @bind="@obj.Size" />
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <input type="button" class="btn btn-primary" @onclick="@CreateNewFarm" value="Save FarmDetails" />
+                <input type="button" class="btn btn-danger" @onclick="@Cancel" value="Cancel" />
+            </div>
+        </div>
+    </div>
+</form>
+
+@code {
+    Farm obj = new Farm();
+
+    protected async void CreateNewFarm()
+    {
+        await FarmService.AddNewFarmDetails(obj);
+        NavigationManager.NavigateTo("farmdetailslist");
+    }
+    protected async void Cancel()
+    {
+        NavigationManager.NavigateTo("farmdetailslist");
+    }
+
+}

@@ -1,0 +1,71 @@
+﻿@page "/cropdetails"
+
+@using FarmServiceApplication.Data
+@using FarmServiceApplication.Services
+@inject CropService CropService
+<NavLink class="nav-link" href="addnewcropdata">
+    <span class="oi oi-plus" aria-hidden="true"> Add New  Crop Details..</span>
+</NavLink>
+
+<h3>Crops Details...</h3>
+
+@if (EmpObj is null)
+{
+    <p><em>Loading..............!!</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Crop Id
+                </th>
+                <th>
+                    FarmId
+                </th>
+                <th>
+                    Crop Name
+                </th>
+                <th>
+                    PlantingDate
+                </th>
+                <th>
+                    HervestDate
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var farmDetail in EmpObj)
+            {
+                <tr>
+                    <td>
+                        @farmDetail.CropId
+                    </td>
+                    <td>
+                        @farmDetail.FarmId
+                    </td>
+                    <td>
+                        @farmDetail.CropName
+                    </td>
+                    <td>
+                        @farmDetail.PlantingDate
+                    </td>
+                    <td>
+                        @farmDetail.HervestDate
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+@code {
+    List<Crop> EmpObj;
+
+    protected override async Task OnInitializedAsync()
+    {
+        EmpObj = await Task.Run(() => CropService.GetAllCrop());
+    }
+}

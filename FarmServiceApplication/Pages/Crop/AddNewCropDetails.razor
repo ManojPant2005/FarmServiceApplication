@@ -1,0 +1,56 @@
+﻿@page "/addnewcropdata"
+
+@using FarmServiceApplication.Data
+@using FarmServiceApplication.Services
+@inject CropService CropService
+@inject NavigationManager NavigationManager
+
+<h3>Add New Crop Details</h3>
+<hr />
+
+<form>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="for-group">
+                <label for="FarmId" class="control-label">FarmId</label>
+                <input form="FarmId" class="form-control" @bind="@obj.FarmId" />
+            </div>
+            <div class="for-group">
+                <label for="CropName" class="control-label">CropName</label>
+                <input form="CropName" class="form-control" @bind="@obj.CropName" />
+            </div>
+            <div class="for-group">
+                <label for="PlantingDate" class="control-label">PlantingDate</label>
+                <input form="PlantingDate" class="form-control" @bind="@obj.PlantingDate" />
+            </div>
+            <div class="for-group">
+                <label for="HervestDate" class="control-label">HervestDate</label>
+                <input form="HervestDate" class="form-control" @bind="@obj.HervestDate" />
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <input type="button" class="btn btn-primary" @onclick="@CreateNewShopData" value="Save FarmDetails" />
+                <input type="button" class="btn btn-danger" @onclick="@Cancel" value="Cancel" />
+            </div>
+        </div>
+    </div>
+</form>
+
+@code {
+    Crop obj = new Crop();
+
+    protected async void CreateNewShopData()
+    {
+        await CropService.AddNewCropDetails(obj);
+        NavigationManager.NavigateTo("cropdetails");
+    }
+    protected async void Cancel()
+    {
+        NavigationManager.NavigateTo("cropdetails");
+    }
+
+}

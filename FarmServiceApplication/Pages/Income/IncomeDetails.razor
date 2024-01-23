@@ -1,0 +1,94 @@
+﻿@page "/income"
+@using FarmServiceApplication.Data
+@using FarmServiceApplication.Services
+@inject IncomeService IncomeService
+@inject NavigationManager NavigationManager
+
+
+<NavLink class="nav-link" href="addincomedetails">
+    <span class="oi oi-plus" aria-hidden="true"> Add New Income Details..</span>
+</NavLink>
+
+<h3>Owners Income Details...</h3>
+
+@if (EmpObj is null)
+{
+    <p><em>Loading..............!!</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Income No
+                </th>
+                <th>
+                    Farm Id
+                </th>
+                <th>
+                    IncomeType
+                </th>
+                <th>
+                    IncomeAmount
+                </th>
+                <th>
+                    IncomeDate
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var farmDetail in EmpObj)
+            {
+                <tr>
+                    <td>
+                        @farmDetail.IncomeId
+                    </td>
+                    <td>
+                        @farmDetail.FarmId
+                    </td>
+                    <td>
+                        @farmDetail.IncomeType
+                    </td>
+                    <td>
+                        @farmDetail.IncomeAmount
+                    </td>
+                    <td>
+                        @farmDetail.IncomeDate
+                    </td>
+                    <td>
+                        <button class="btn btn-primary"
+                                @onclick="(() => ShowOwnerDetails(farmDetail.IncomeId))">
+                            <i class="oi oi-pencil"></i>
+                        </button>
+                    </td>
+                    <td>
+                        <button class="btn btn-success"
+                                @onclick="(() => ManageDetail(farmDetail.IncomeId))">
+                            <i class="oi oi-badge"></i>
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+@code {
+    List<Income> EmpObj;
+
+    protected override async Task OnInitializedAsync()
+    {
+        EmpObj = await Task.Run(() => IncomeService.GetAllIncome());
+    }
+    void ShowOwnerDetails(int id)
+    {
+        NavigationManager.NavigateTo("/");
+    }
+    void ManageDetail(int id)
+    {
+        NavigationManager.NavigateTo("/");
+    }
+
+}

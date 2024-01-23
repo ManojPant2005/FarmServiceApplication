@@ -1,0 +1,66 @@
+﻿@page "/deleteExepenseDetails/{ExpenseId}"
+
+@using FarmServiceApplication.Data
+@using FarmServiceApplication.Services
+@inject ExpenseService ExpenseService
+@inject NavigationManager NavigationManager
+
+<h3>Delete Expense Details</h3>
+<hr />
+
+<form>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="for-group">
+                        <label for="FarmName" class="control-label">FarmId</label>
+                        <input form="farmName" class="form-control" @bind="@obj.FarmId" />
+                    </div>
+                    <div class="for-group">
+                        <label for="ExpensesType" class="control-label">ExpensesType</label>
+                        <input form="ExpensesType" class="form-control" @bind="@obj.ExpensesType" />
+                    </div>
+                    <div class="for-group">
+                        <label for="ExpensesAmount" class="control-label">ExpensesAmount</label>
+                        <input form="ExpensesAmount" class="form-control" @bind="@obj.ExpensesAmount" />
+                    </div>
+                    <div class="for-group">
+                        <label for="ExpensesDate" class="control-label">ExpensesDate</label>
+                        <input form="ExpensesDate" class="form-control" @bind="@obj.ExpensesDate" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <input type="button" class="btn btn-primary" @onclick="@DeleteExpense" value=" Delete FarmDetails" />
+                <input type="button" class="btn btn-outline-danger" @onclick="@Cancel" value="Cancel" />
+            </div>
+        </div>
+    </div>
+</form>
+
+@code {
+    [Parameter]
+    public string ExpenseId { get; set; }
+    Expense obj = new Expense();
+    protected override async Task OnInitializedAsync()
+    {
+        obj = await Task.Run(() => ExpenseService.GetExpenseById(Convert.ToInt32(ExpenseId)));
+    }
+
+    protected async void DeleteExpense()
+    {
+        await ExpenseService.DeleteExpenseDetails(obj);
+        NavigationManager.NavigateTo("expenseDetails");
+    }
+    protected async void Cancel()
+    {
+        NavigationManager.NavigateTo("expenseDetails");
+    }
+
+}

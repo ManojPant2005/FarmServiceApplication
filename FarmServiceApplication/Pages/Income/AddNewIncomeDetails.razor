@@ -1,0 +1,55 @@
+﻿@page "/addincomedetails"
+
+@using FarmServiceApplication.Data
+@using FarmServiceApplication.Services
+@inject IncomeService IncomeService
+@inject NavigationManager NavigationManager
+<h3>Add New Income Details</h3>
+<hr />
+
+<form>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="for-group">
+                <label for="FarmId" class="control-label">FarmId</label>
+                <input form="FarmId" class="form-control" @bind="@obj.FarmId" />
+            </div>
+            <div class="for-group">
+                <label for="IncomeType" class="control-label">IncomeType</label>
+                <input form="IncomeType" class="form-control" @bind="@obj.IncomeType" />
+            </div>
+            <div class="for-group">
+                <label for="IncomeAmount" class="control-label">IncomeAmount</label>
+                <input form="IncomeAmount" class="form-control" @bind="@obj.IncomeAmount" />
+            </div>
+            <div class="for-group">
+                <label for="IncomeDate" class="control-label">IncomeDate</label>
+                <input form="IncomeDate" class="form-control" @bind="@obj.IncomeDate" />
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <input type="button" class="btn btn-primary" @onclick="@CreateNewIncomeDetails" value="Save Income Details" />
+                <input type="button" class="btn btn-danger" @onclick="@Cancel" value="Cancel" />
+            </div>
+        </div>
+    </div>
+</form>
+
+@code {
+    Income obj = new Income();
+
+    protected async void CreateNewIncomeDetails()
+    {
+        await IncomeService.AddNewIncomeDetails(obj);
+        NavigationManager.NavigateTo("income");
+    }
+    protected async void Cancel()
+    {
+        NavigationManager.NavigateTo("income");
+    }
+
+}

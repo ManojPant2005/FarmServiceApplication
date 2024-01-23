@@ -1,0 +1,77 @@
+﻿@page "/farmdetailslist"
+@using FarmServiceApplication.Data
+@using FarmServiceApplication.Services
+@inject FarmService FarmService
+@inject NavigationManager NavigationManager
+
+<NavLink class="nav-link" href="addfarmdetails">
+    <span class="oi oi-plus" aria-hidden="true"> Add New FarmDetails..</span>
+</NavLink>
+
+<h3>Farm Details...</h3>
+
+@if (EmpObj is null)
+{
+    <p><em>Loading..............!!</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Farm No
+                </th>
+                <th>
+                    Farm Name
+                </th>
+                <th>
+                    Location
+                </th>
+                <th>
+                    Size
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var farmDetail in EmpObj)
+            {
+                <tr>
+                    <td>
+                        @farmDetail.FarmId
+                    </td>
+                    <td>
+                        @farmDetail.FarmName
+                    </td>
+                    <td>
+                        @farmDetail.Location
+                    </td>
+                    <td>
+                        @farmDetail.Size
+                    </td>
+                    <td>
+                        <a class="nav-link btn btn-group-sm" href="EditFarmDetails/@farmDetail.FarmId">
+                            <span class="oi oi-pencil" aria-hidden="true"> Edit </span>
+                        </a>
+                    </td>
+                    <td>
+                        <a class="nav-link btn btn-group-sm" href="DeleteFarmDetails/@farmDetail.FarmId">
+                            <span class="oi oi-trash" aria-hidden="true"> Delete </span>
+                        </a>
+                    </td>
+
+                 </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+@code {
+    List<Farm> EmpObj;
+
+    protected override async Task OnInitializedAsync()
+    {
+        EmpObj = await Task.Run(() => FarmService.GetAllFarms());
+    }
+}

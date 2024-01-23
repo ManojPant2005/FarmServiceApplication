@@ -1,0 +1,66 @@
+﻿@page "/DeleteFarmDetails/{FarmId}"
+
+@using FarmServiceApplication.Data
+@using FarmServiceApplication.Services
+@inject FarmService FarmService
+@inject NavigationManager NavigationManager
+
+<h3>DeleteFarmDetails</h3>
+<hr />
+
+<form>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="for-group">
+                        <label for="FarmName" class="control-label">ID</label>
+                        <input form="farmName" class="form-control" @bind="@obj.FarmId" />
+                    </div>
+                    <div class="for-group">
+                        <label for="FarmName" class="control-label">FarmName</label>
+                        <input form="farmName" class="form-control" @bind="@obj.FarmName" />
+                    </div>
+                    <div class="for-group">
+                        <label for="Location" class="control-label">Location</label>
+                        <input form="Location" class="form-control" @bind="@obj.Location" />
+                    </div>
+                    <div class="for-group">
+                        <label for="Size" class="control-label">Size</label>
+                        <input form="Size" class="form-control" @bind="@obj.Size" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <input type="button" class="btn btn-primary" @onclick="@DeleteFarmDetail" value=" Delete FarmDetails" />
+                <input type="button" class="btn btn-outline-danger" @onclick="@Cancel" value="Cancel" />
+            </div>
+        </div>
+    </div>
+</form>
+
+@code {
+    [Parameter]
+    public string FarmId { get; set; }
+    Farm obj = new Farm();
+    protected override async Task OnInitializedAsync()
+    {
+        obj = await Task.Run(() => FarmService.GetFarmsById(Convert.ToInt32(FarmId)));
+    }
+
+    protected async void DeleteFarmDetail()
+    {
+        await FarmService.DeleteFarmDetails(obj);
+        NavigationManager.NavigateTo("farmdetailslist");
+    }
+    protected async void Cancel()
+    {
+        NavigationManager.NavigateTo("farmdetailslist");
+    }
+
+}
